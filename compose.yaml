@@ -1,0 +1,28 @@
+services:
+  payload:
+    image: node:18-alpine
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - database
+    env_file:
+      - .env
+
+  database:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_PASSWORD: password
+
+volumes:
+  data:
+  node_modules:

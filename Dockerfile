@@ -2,22 +2,21 @@ FROM node:18.8-alpine as base
 
 FROM base as builder
 
-WORKDIR /home/node/app
+WORKDIR /app
 COPY package*.json ./
 
 COPY . .
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN npm build
 
 FROM base as runtime
 
 ENV NODE_ENV=production
 
-WORKDIR /home/node/app
+WORKDIR /app
 COPY package*.json  ./
-COPY yarn.lock ./
 
-RUN yarn install --production
+RUN npm install --production
 
 EXPOSE 3000
 
