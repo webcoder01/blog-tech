@@ -23,26 +23,23 @@ export default async function Page() {
       slug: true,
       categories: true,
       meta: true,
+      publishedAt: true,
     },
   });
 
   return (
-    <div className="pt-24 pb-24">
+    <main>
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Articles</h1>
-        </div>
-      </div>
+      <div className="container pt-20 pb-20">
+        <h1 className="mb-5">Articles</h1>
 
-      <CollectionArchive posts={posts.docs} />
+        <CollectionArchive posts={posts.docs} />
 
-      <div className="container">
         {posts.totalPages > 1 && posts.page && (
           <Pagination page={posts.page} totalPages={posts.totalPages} />
         )}
       </div>
-    </div>
+    </main>
   );
 }
 

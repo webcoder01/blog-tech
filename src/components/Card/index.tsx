@@ -1,14 +1,17 @@
 "use client";
 import { cn } from "@/utilities/cn";
-import useClickableCard from "@/utilities/useClickableCard";
 import Link from "next/link";
 import React, { Fragment } from "react";
 
 import type { Post } from "@/payload-types";
 
 import { Media } from "@/components/Media";
+import { formatDateTime } from "@/utilities/formatDateTime";
 
-export type CardPostData = Pick<Post, "slug" | "categories" | "meta" | "title">;
+export type CardPostData = Pick<
+  Post,
+  "slug" | "categories" | "meta" | "title" | "publishedAt"
+>;
 
 export const Card: React.FC<{
   alignItems?: "center";
@@ -18,7 +21,6 @@ export const Card: React.FC<{
   showCategories?: boolean;
   title?: string;
 }> = (props) => {
-  const { card, link } = useClickableCard({});
   const {
     className,
     doc,
@@ -37,19 +39,14 @@ export const Card: React.FC<{
   const href = `/${relationTo}/${slug}`;
 
   return (
-    <article
-      className={cn(
-        "border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer",
-        className,
-      )}
-      ref={card.ref}
-    >
+    <article className={cn("overflow-hidden bg-white", className)}>
       <div className="relative w-full ">
         {metaImage && typeof metaImage !== "string" && (
           <Media resource={metaImage} size="33vw" />
         )}
       </div>
-      <div className="p-4">
+
+      <div className="h-full p-4 flex flex-col justify-between">
         {showCategories && hasCategories && (
           <div className="uppercase text-sm mb-4">
             {showCategories && hasCategories && (
@@ -77,20 +74,26 @@ export const Card: React.FC<{
             )}
           </div>
         )}
-        {titleToUse && (
-          <div className="prose">
-            <h3>
-              <Link className="not-prose" href={href} ref={link.ref}>
-                {titleToUse}
-              </Link>
-            </h3>
-          </div>
-        )}
+
+        {titleToUse && <h2>{titleToUse}</h2>}
+
         {description && (
-          <div className="mt-2">
+          <div className="flex-grow mt-5">
             {description && <p>{sanitizedDescription}</p>}
           </div>
         )}
+
+        <footer className="mt-10 flex flex-row flex-nowrap justify-between align-middle">
+          <Link href={href} className="text-primary hover:underline">
+            Lire l&apos;article
+          </Link>
+
+          {doc?.publishedAt && (
+            <span className="text-sm text-zinc-400">
+              Publié le {formatDateTime(doc.publishedAt)}
+            </span>
+          )}
+        </footer>
       </div>
     </article>
   );
