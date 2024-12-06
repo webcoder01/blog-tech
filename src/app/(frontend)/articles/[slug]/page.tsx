@@ -8,11 +8,9 @@ import { draftMode } from "next/headers";
 import React, { cache } from "react";
 import RichText from "@/components/RichText";
 
-import type { Post } from "@/payload-types";
-
-import { PostHero } from "@/heros/PostHero";
 import { generateMeta } from "@/utilities/generateMeta";
 import PageClient from "./page.client";
+import { formatDate } from "@/utilities/dateTimeFormatters";
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise });
@@ -48,32 +46,46 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />;
 
   return (
-    <article className="pt-16 pb-16">
-      <PageClient />
+    <main className="flex flex-col items-center container">
+      <article className="pt-20 pb-20 flex flex-col gap-4 max-w-[48rem]">
+        <PageClient />
 
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
+        {/* Allows redirects for valid pages too */}
+        <PayloadRedirects disableNotFound url={url} />
 
-      <PostHero post={post} />
+        <header className="flex flex-col">
+          <h1>{post.title}</h1>
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText
-            className="max-w-[48rem] mx-auto"
-            data={post.content}
-            enableGutter={false}
+          <div className="mt-10 mb-10 text-sm text-zinc-500">
+            {post.publishedAt && (
+              <span>
+                Publié le{" "}
+                <time dateTime={post.publishedAt}>
+                  {formatDate(post.publishedAt)}
+                </time>
+              </span>
+            )}
+            ,&nbsp;
+            {post.updatedAt && (
+              <span>
+                mis à jour le{" "}
+                <time dateTime={post.updatedAt}>
+                  {formatDate(post.updatedAt)}
+                </time>
+              </span>
+            )}
+          </div>
+        </header>
+
+        <RichText data={post.content} enableGutter={false} />
+        {post.relatedPosts && post.relatedPosts.length > 0 && (
+          <RelatedPosts
+            className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+            docs={post.relatedPosts.filter((post) => typeof post === "object")}
           />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter(
-                (post) => typeof post === "object",
-              )}
-            />
-          )}
-        </div>
-      </div>
-    </article>
+        )}
+      </article>
+    </main>
   );
 }
 
