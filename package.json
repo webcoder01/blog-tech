@@ -65,17 +65,21 @@
     "@types/node": "22.5.4",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.19",
     "copyfiles": "^2.4.1",
     "eslint": "^8",
     "eslint-config-next": "^15.0.3",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.1.7",
+    "jsdom": "^25.0.1",
     "lint-staged": "^15.2.10",
     "postcss": "^8.4.38",
     "prettier": "3.4.2",
     "tailwindcss": "^3.4.3",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0"
