@@ -1,9 +1,9 @@
-import { formatDateTime } from "src/utilities/formatDateTime";
 import React from "react";
 
 import type { Post } from "@/payload-types";
 
 import { Media } from "@/components/Media";
+import { formatDate } from "@/utilities/dateTimeFormatters";
 
 export const PostHero: React.FC<{
   post: Post;
@@ -77,9 +77,7 @@ export const PostHero: React.FC<{
               <div className="flex flex-col gap-1">
                 <p className="text-sm">Publié le</p>
 
-                <time dateTime={publishedAt}>
-                  {formatDateTime(publishedAt)}
-                </time>
+                <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
               </div>
             )}
           </div>

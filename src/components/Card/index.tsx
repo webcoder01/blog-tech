@@ -6,7 +6,7 @@ import React, { Fragment } from "react";
 import type { Post } from "@/payload-types";
 
 import { Media } from "@/components/Media";
-import { formatDateTime } from "@/utilities/formatDateTime";
+import { formatDate } from "@/utilities/dateTimeFormatters";
 
 export type CardPostData = Pick<
   Post,
@@ -89,9 +89,9 @@ export const Card: React.FC<{
           </Link>
 
           {doc?.publishedAt && (
-            <span className="text-sm text-zinc-400">
-              Publié le {formatDateTime(doc.publishedAt)}
-            </span>
+            <time dateTime={doc.publishedAt} className="text-sm text-zinc-400">
+              Publié le {formatDate(doc.publishedAt)}
+            </time>
           )}
         </footer>
       </div>
